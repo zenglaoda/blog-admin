@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .sp-ellipsis {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap
+  }
+}

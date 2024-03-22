@@ -4,6 +4,7 @@ function App() {
   return (
     <>
       <LayoutNavbar></LayoutNavbar>
+      <div className="sp-ellipsis">dada</div>
     </>
   )
 }
