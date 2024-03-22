@@ -1,10 +1,9 @@
-import LayoutNavbar from "./layout/navbar"
+import LayoutNavbar from "./layout/Navbar";
 
 function App() {
   return (
     <>
       <LayoutNavbar></LayoutNavbar>
-      <div className="sp-ellipsis">dada</div>
     </>
   )
 }
