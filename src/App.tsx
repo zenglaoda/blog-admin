@@ -1,9 +1,10 @@
-import LayoutNavbar from "./layout/Navbar";
+// import LayoutNavbar from "./layout/Navbar";
+import { Sidebar } from "./layout/Sidebar"
 
 function App() {
   return (
     <>
-      <LayoutNavbar></LayoutNavbar>
+      <Sidebar></Sidebar>
     </>
   )
 }
