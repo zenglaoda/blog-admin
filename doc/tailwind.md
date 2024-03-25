@@ -79,6 +79,15 @@ tailwind CSS 将 1rem 分成 4分。
 | leading-5 | leading-5	line-height: 1.25rem; /* 20px */ |
 
 
+## 圆角
+| Class        | Properties                         |
+| ------------ | ---------------------------------- |
+| rounded-none | border-radius: 0px;                |
+| rounded-sm   | border-radius: 0.125rem; /* 2px */ |
+| rounded      | border-radius: 0.25rem; /* 4px */  |
+| rounded-md   | border-radius: 0.375rem; /* 6px */ |
+| rounded-xl   | border-radius: 0.75rem; /* 12px */ |
+
 
 ## Reference
 - [网站UI参考](https://demos.creative-tim.com/)

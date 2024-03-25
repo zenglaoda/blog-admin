@@ -32,11 +32,11 @@ export function Sidebar() {
     },
   ];
   return (
-    <aside className="fixed inset-y-0 my-4 ml-4 w-60 overflow-y-auto rounded-2xl font-serif">
+    <aside className="fixed inset-y-0 my-4 ml-4 w-56 overflow-y-auto rounded-2xl font-serif">
       <div className="h-20 flex justify-center items-center text-slate-800 text-xl font-bold">
         Blog
       </div>
-      <hr className="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"/>
+      <hr className="h-px mt-0 mb-6 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"/>
       <Menu items={items}></Menu>
     </aside>
   )

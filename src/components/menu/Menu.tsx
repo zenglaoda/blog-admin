@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import classNames from 'classnames';
 
 export type Item = {
   menuItem: ReactNode,
@@ -17,7 +18,10 @@ export function Menu(props: Props) {
       <ul>
         {items.map((item, index) => (
           <li key={index} className="list-none p-0">
-            {item.menuItem}
+            <button className="w-full flex items-center py-2.5  pl-4">
+              <span className='size-8 mr-2'></span>
+              <span className='flex-1 text-left font-medium text-slate-800/50 text-xs'>Virtual Info</span>
+            </button>
           </li>
         ))}
       </ul>
@@ -28,8 +32,11 @@ export function Menu(props: Props) {
     return (
       <ul>
         {items.map((item, index) => (
-          <li key={index} className="list-none p-0">
-            {item.menuItem}
+          <li key={index}>
+            <button className="w-full flex items-center py-2.5 pl-4 group is-active">
+              <span className='inline-flex items-center justify-center size-8 mr-2 bg-transparent rounded before:content before:size-1 before:bg-slate-800/50 before:rounded-full before:&.is-active:bg-black'></span>
+              <span className='flex-1 text-left text-sm font-medium text-slate-800/50 group-[.is-active]:font-semibold group-[.is-active]:text-slate-800'>Virtual Reality</span>
+            </button>
             {renderMenuItem(item.children)}
           </li>
         ))}
@@ -39,8 +46,11 @@ export function Menu(props: Props) {
   return props.items && props.items.length && (
     <ul>
       {props.items.map((item, index) => (
-        <li key={index} className="list-none p-0">
-          {item.menuItem}
+        <li key={index}>
+          <button className={classNames('w-full flex items-center py-2.5  pl-4 border-0 outline-none group', index === 0 ? 'is-active bg-white rounded shadow-lg' : '')}>
+            <span className='inline-flex items-center justify-center size-8 mr-2 bg-white rounded shadow-lg'>-</span>
+            <span className='flex-1 text-left text-sm font-medium text-slate-500'>Dashboards</span>
+          </button>
           {renderSecond(item.children)}
         </li>
       ))}
