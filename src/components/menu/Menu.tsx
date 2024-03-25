@@ -1,5 +1,3 @@
-import { MenuItem } from './MenuItem';
-
 import type { ReactNode } from 'react';
 
 export type Item = {
