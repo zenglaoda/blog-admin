@@ -1,60 +1,116 @@
-import type { ReactNode } from 'react';
-import classNames from 'classnames';
+import { Key, useState, useEffect } from 'react';
+import { MenuButton } from './MenuButton';
 
-export type Item = {
-  menuItem: ReactNode,
-  children?: Item[] 
+export type MenuItem = {
+  title: string,
+  id: Key,
+  children?: MenuItem[]
 }
 
-interface Props {
-  items: Item[]
+export interface MenuProps {
+  items: MenuItem[];
+  openKeys?: Key[],
+  selectedKeys?: Key,
+  onOpenChange?: (openKeys: Key[]) => void
 }
 
+export function Menu(props: MenuProps) {
+  const keyField = 'id';
+  const labelField = 'title';
 
-export function Menu(props: Props) {
-  const renderMenuItem = (items?: Item[]) => {
+  // 折叠
+  const [openKeys, setOpenKeys] = useState<Key[]>([]);
+  const openKeysSet = new Set(openKeys);
+  useEffect(() => {
+    if (props.openKeys !== undefined) {
+      setOpenKeys(props.openKeys);
+    }
+  }, [props.openKeys]);
+  const isOpen = (item: MenuItem) => openKeysSet.has(item[keyField]);
+  const isLeafMenu = (item: MenuItem) => !item.children || item.children.length === 0;
+  const open = (item: MenuItem) => {
+    if (isOpen(item)) {
+      openKeysSet.delete(item[keyField]);
+    } else {
+      openKeysSet.add(item[keyField]);
+    }
+    const keys = [...openKeysSet];
+    setOpenKeys(keys);
+    if (props.onOpenChange) {
+      props.onOpenChange(keys);
+    }
+  }
+
+  // 选中
+  const [selectedKeys, setSelectedKeys] = useState(props.selectedKeys);
+  useEffect(() => {
+    if (props.selectedKeys !== undefined) {
+      setSelectedKeys(props.selectedKeys);
+    }
+  }, [props.selectedKeys])
+  const isActive = (item: MenuItem) => item[keyField] === selectedKeys;
+  const onSelect = (item: MenuItem) => {
+    setSelectedKeys(item[keyField]);
+  }
+
+  const renderMenuItem = (items?: MenuItem[]) => {
     if (!items || items.length === 0) return
     return (
       <ul>
-        {items.map((item, index) => (
-          <li key={index} className="list-none p-0">
-            <button className="w-full flex items-center py-2.5  pl-4">
-              <span className='size-8 mr-2'></span>
-              <span className='flex-1 text-left font-medium text-slate-800/50 text-xs'>Virtual Info</span>
-            </button>
+        {items.map((item) => (
+          <li key={item[keyField]}>
+            <MenuButton
+              label={item[labelField]}
+              level={2}
+              isOpen={isOpen(item)}
+              isLeaf={isLeafMenu(item)}
+              isActive={isActive(item)}
+              onOpen={() => open(item)}
+              onSelect={() => onSelect(item)}
+            />
           </li>
         ))}
       </ul>
     );
   };
-  const renderSecond = (items?: Item[]) => {
-    if (!items || items.length === 0) return
+  const renderSecond = (items?: MenuItem[]) => {
+    if (!items || items.length === 0) return;
     return (
       <ul>
-        {items.map((item, index) => (
-          <li key={index}>
-            <button className="w-full flex items-center py-2.5 pl-4 group is-active">
-              <span className='inline-flex items-center justify-center size-8 mr-2 bg-transparent rounded before:content before:size-1 before:bg-slate-800/50 before:rounded-full before:&.is-active:bg-black'></span>
-              <span className='flex-1 text-left text-sm font-medium text-slate-800/50 group-[.is-active]:font-semibold group-[.is-active]:text-slate-800'>Virtual Reality</span>
-            </button>
-            {renderMenuItem(item.children)}
+        {items.map((item) => (
+          <li key={item[keyField]}>
+            <MenuButton
+              label={item[labelField]}
+              level={1}
+              isOpen={isOpen(item)}
+              isLeaf={isLeafMenu(item)}
+              isActive={isActive(item)}
+              onOpen={() => open(item)}
+              onSelect={() => onSelect(item)}
+            />
+            {isOpen(item) && renderMenuItem(item.children)}
           </li>
         ))}
       </ul>
     );
-  }
+  };
   return props.items && props.items.length && (
     <ul>
-      {props.items.map((item, index) => (
-        <li key={index}>
-          <button className={classNames('w-full flex items-center py-2.5  pl-4 border-0 outline-none group', index === 0 ? 'is-active bg-white rounded shadow-lg' : '')}>
-            <span className='inline-flex items-center justify-center size-8 mr-2 bg-white rounded shadow-lg'>-</span>
-            <span className='flex-1 text-left text-sm font-medium text-slate-500'>Dashboards</span>
-          </button>
-          {renderSecond(item.children)}
+      {props.items.map((item) => (
+        <li key={item[keyField]}>
+          <MenuButton
+            label={item[labelField]}
+            level={0}
+            isOpen={isOpen(item)}
+            isActive={isActive(item)}
+            isLeaf={isLeafMenu(item)}
+            onOpen={() => open(item)}
+            onSelect={() => onSelect(item)}
+          />
+          {isOpen(item) && renderSecond(item.children)}
         </li>
       ))}
     </ul>
-  )
+  );
 }
 

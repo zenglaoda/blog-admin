@@ -1,43 +1,91 @@
-import { Menu, MenuItem } from '@/components/menu';
+import { useState } from 'react';
+import classNames from 'classnames';
+import { Menu } from '@/components/menu';
 
-import type { Item } from '@/components/menu';
+// import type { MenuItem } from '@/components/menu';
 
 export function Sidebar() {
-  const items: Item[] = [
+  const [showCategory, ToggleCategory] = useState(false);
+  const categories =  [
     {
-      menuItem: <MenuItem label="一级分类"></MenuItem>,
-      children: [
+      "id": 1,
+      "pid": 0,
+      "next_id": 3,
+      "title": "分类一",
+      "description": "",
+      "children": []
+    },
+    {
+      "id": 3,
+      "pid": 0,
+      "next_id": 4,
+      "title": "分类二",
+      "description": "",
+      "children": [
         {
-          menuItem: <MenuItem label="二级分类"></MenuItem>,
-          children: [
-            {
-              menuItem: <MenuItem label="三级分类"></MenuItem>,
-            }
-          ]
+          "id": 10,
+          "pid": 3,
+          "next_id": 12,
+          "title": "3-1",
+          "description": "",
+          "children": []
+        },
+        {
+          "id": 12,
+          "pid": 3,
+          "next_id": 0,
+          "title": "3-3",
+          "description": "",
+          "children": []
         }
       ]
     },
     {
-      menuItem: (<div>一级分类</div>),
-      children: [
-        {
-          menuItem: (<div>二级分类</div>),
-          children: [
-            {
-              menuItem: (<div>三级分类</div>),
-            }
-          ]
-        }
-      ]
+      "id": 4,
+      "pid": 0,
+      "next_id": 5,
+      "title": "分类三",
+      "description": "",
+      "children": []
     },
+    {
+      "id": 5,
+      "pid": 0,
+      "next_id": 0,
+      "title": "分类四",
+      "description": "分类4",
+      "children": []
+    }
   ];
+  const menus = [
+    {
+      "id": 1,
+      "title": "Dashboard",
+    },
+    {
+      "id": 3,
+      "title": "Center",
+    },
+  ]
   return (
-    <aside className="fixed inset-y-0 my-4 ml-4 w-56 overflow-y-auto rounded-2xl font-serif">
-      <div className="h-20 flex justify-center items-center text-slate-800 text-xl font-bold">
-        Blog
+    <aside className="fixed inset-y-0 flex flex-col flex-nowrap my-4 ml-4 w-56 overflow-y-auto rounded-2xl font-serif">
+      <div className={classNames('grow overflow-y-auto', showCategory ? 'hidden' : 'block')}>
+        <div className="h-20 flex justify-center items-center text-slate-800 text-xl font-bold">
+          Blog
+        </div>
+        <hr className="h-px mt-0 mb-6 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"/>
+        <Menu items={menus}></Menu>
       </div>
-      <hr className="h-px mt-0 mb-6 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"/>
-      <Menu items={items}></Menu>
+      <div  className={classNames('grow overflow-y-auto', showCategory ? 'block' : 'hidden')}>
+        <div className="h-20 flex justify-center items-center text-slate-800 text-xl font-bold">
+          Blog
+        </div>
+        <hr className="h-px mt-0 mb-6 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"/>
+        <Menu items={categories}></Menu>
+      </div>
+      <div className="shrink-0">
+        <button className="w-20 h-8 outline-none" onClick={() => ToggleCategory(!showCategory)}>toggle</button>
+      </div>
     </aside>
   )
 }
